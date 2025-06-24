@@ -4,7 +4,6 @@ const TaskSchema = new mongoose.Schema({
     text: {
         type: mongoose.Schema.Types.String,
         required: true,
-        unique: true,
     },
     completed: {
         type: mongoose.Schema.Types.Boolean,

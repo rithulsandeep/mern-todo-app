@@ -8,8 +8,6 @@ export const getTasks = async (req, res) => {
     } catch (err) {
         console.log(err);
     }
-
-    res.sendStatus(200);
 }
 
 export const createTask = async (req, res) => {
@@ -29,15 +27,24 @@ export const createTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
     console.log("Updating a task");
-    
-    try {
-        
-    }
 
-    res.sendStatus(200);
+    try {
+        const { id } = req.params;
+        const updated = await Task.findByIdAndUpdate(id, req.body, { new: true });
+        return res.status(200).send(updated);
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({ error: err.message });
+    }
 }
 
 export const deleteTask = async (req, res) => {
-    console.log("Deleting a task");
-    res.sendStatus(200);
+    try {
+        const { id } = req.params;
+        const deleted = await Task.findByIdAndDelete(id);
+        return res.status(200).send(deleted);
+    } catch (err) {
+        console.log(err);
+        res.send(400);
+    }
 }
