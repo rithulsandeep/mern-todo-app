@@ -15,21 +15,23 @@ export async function getTasks() {
 
 export async function createTask(task) {
     try {
-        const response = await axios.post(URL, task);
-        console.log("Creating Task from React");
-        return response;
+        const response = await axios.post(`${URL}`, task);
+        return response.data;
     } catch (err) {
         console.log(err);
-        return null
+        return null;
     }
 }
 
-export async function updateTask(id, completed) {
+
+export async function updateTask(id, updatedFields) {
     try {
-        await axios.put(`${URL}/${id}`, { completed: !completed });
+        const response = await axios.put(`${URL}/${id}`, updatedFields);
         console.log("Updating Task from React");
+        return response.data;
     } catch (err) {
         console.log(err);
+        return null;
     }
 }
 
