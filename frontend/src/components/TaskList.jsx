@@ -1,5 +1,7 @@
 import { getTasks, updateTask, deleteTask, createTask } from '../api.js';
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify'
+
 
 export default function TaskList() {
     const [tasks, setTasks] = useState([]);
@@ -42,7 +44,21 @@ export default function TaskList() {
 
     const handleCreate = async (e) => {
         e.preventDefault();
-        if (!input.trim()) return;
+
+        const trimmedInput = input.trim().toLowerCase();
+        if (!trimmedInput) return;
+
+        const isDuplicate = tasks.some(
+            (task) => task.text.trim().toLowerCase() === trimmedInput
+        );
+
+        if (isDuplicate) {
+            toast.warning("Task already exists!", {
+                position: "bottom-right",
+                autoClose: 3000,
+            });
+            return;
+        }
 
         try {
             const newTask = await createTask({ text: input });
@@ -52,6 +68,7 @@ export default function TaskList() {
             console.error("Failed to create task:", err);
         }
     };
+
 
     if (loading) return <p>Loading tasks...</p>;
 
